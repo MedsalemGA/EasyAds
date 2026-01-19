@@ -30,13 +30,18 @@ Using phpMyAdmin or MySQL console:
  DB_DATABASE=my_database_name
  DB_USERNAME=root
  DB_PASSWORD=
+
 4️⃣ Install Backend Dependencies
  cd backend
  composer install
+
 5️⃣ Generate Application Key
 php artisan key:generate
+
 6️⃣ Run Database Migrations
 php artisan migrate
+
+
 7️⃣ Run the Backend Server
  php artisan serve
 
