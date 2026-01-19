@@ -1,0 +1,276 @@
+<app-navbar></app-navbar>
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-indigo-500 to-purple-600 py-20 px-4">
+  <div class="max-w-7xl mx-auto text-center">
+    <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
+      Trouvez tout ce que vous cherchez
+    </h1>
+    <p class="text-xl md:text-2xl text-indigo-100 mb-10 max-w-3xl mx-auto">
+      La plateforme d'annonces qui simplifie vos recherches. Véhicules, immobilier, emplois et bien plus encore.
+    </p>
+
+    <!-- Search Bar -->
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-full shadow-2xl p-2 flex items-center">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="applyFilters()"
+          placeholder="Rechercher une annonce..."
+          class="flex-1 px-6 py-4 text-lg outline-none rounded-l-full"
+        />
+        <button
+          (click)="applyFilters()"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-full font-semibold transition duration-300 flex items-center gap-2">
+          <i class="fas fa-search"></i>
+          Rechercher
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-20 px-4 bg-gray-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Explorez nos catégories
+      </h2>
+      <p class="text-xl text-gray-600">
+        Trouvez rapidement ce que vous cherchez
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let category of categories"
+           (click)="filterByCategory(category.name)"
+           class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 p-8 cursor-pointer group">
+        <div class="text-5xl mb-4 text-indigo-600 group-hover:scale-110 transition duration-300">
+          <i [class]="category.icon"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ category.name }}</h3>
+        <p class="text-gray-600 mb-4">{{ category.count }} annonces</p>
+        <div class="text-indigo-600 font-semibold hover:text-indigo-700 flex items-center gap-2">
+          Découvrir
+          <i class="fas fa-arrow-right group-hover:translate-x-2 transition duration-300"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filtres Section -->
+<section class="py-12 px-4 bg-white border-b">
+  <div class="max-w-7xl mx-auto">
+    <div class="bg-gray-50 rounded-2xl p-6 shadow-lg">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-2xl font-bold text-gray-900">
+          <i class="fas fa-filter text-indigo-600 mr-2"></i>Filtres
+        </h3>
+        <button
+          (click)="resetFilters()"
+          class="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-2">
+          <i class="fas fa-redo"></i> Réinitialiser
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Catégorie -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Catégorie</label>
+          <select
+            [(ngModel)]="selectedCategory"
+            (change)="applyFilters()"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <option value="">Toutes</option>
+            <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+          </select>
+        </div>
+
+        <!-- Wilaya -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Wilaya</label>
+          <select
+            [(ngModel)]="selectedWilaya"
+            (change)="applyFilters()"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <option value="">Toutes</option>
+            <option *ngFor="let wilaya of wilayas" [value]="wilaya">{{ wilaya }}</option>
+          </select>
+        </div>
+
+        <!-- État -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">État</label>
+          <select
+            [(ngModel)]="selectedEtat"
+            (change)="applyFilters()"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            <option value="">Tous</option>
+            <option *ngFor="let etat of etats" [value]="etat">{{ etat }}</option>
+          </select>
+        </div>
+
+        <!-- Prix Min -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Prix Min (DT)</label>
+          <input
+            type="number"
+            [(ngModel)]="minPrice"
+            (input)="applyFilters()"
+            placeholder="0"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+        </div>
+
+        <!-- Prix Max -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Prix Max (DT)</label>
+          <input
+            type="number"
+            [(ngModel)]="maxPrice"
+            (input)="applyFilters()"
+            placeholder="∞"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+        </div>
+      </div>
+
+      <div class="mt-4 text-center text-gray-600">
+        <i class="fas fa-info-circle mr-2"></i>
+        {{ offresFiltered.length }} annonce(s) trouvée(s)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Offres Section -->
+<section class="py-20 px-4 bg-gray-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Dernières annonces
+      </h2>
+      <p class="text-xl text-gray-600">
+        Découvrez les offres les plus récentes
+      </p>
+    </div>
+
+    <!-- Message si aucune offre -->
+    <div *ngIf="offresFiltered.length === 0" class="text-center py-20">
+      <i class="fas fa-inbox fa-5x text-gray-300 mb-6"></i>
+      <h3 class="text-2xl font-bold text-gray-700 mb-2">Aucune annonce trouvée</h3>
+      <p class="text-gray-500">Essayez de modifier vos filtres</p>
+    </div>
+
+    <!-- Grille d'offres -->
+   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <a *ngFor="let offre of offresFiltered" [routerLink]="['/annonce', offre.id]" class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2 overflow-hidden cursor-pointer">
+           
+           
+         
+        <!-- Image -->
+        <div class="relative h-48 bg-gradient-to-r from-indigo-500 to-purple-600 overflow-hidden">
+          <img
+            *ngIf="offre.images && offre.images.length > 0"
+            [src]="'http://localhost:8000/storage/' + offre.images[0]"
+            [alt]="offre.titre"
+            class="w-full h-full object-cover hover:scale-110 transition duration-300">
+          <div *ngIf="!offre.images || offre.images.length === 0"
+               class="w-full h-full flex items-center justify-center text-white text-5xl">
+            <i class="fas fa-image"></i>
+          </div>
+
+          <!-- Badge catégorie -->
+          <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-indigo-600">
+            {{ offre.categorie }}
+          </span>
+
+         
+          <span class="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+            <i class="fas fa-eye"></i> {{ offre.vues || 0 }}
+          </span>
+        </div>
+
+       
+        <div class="p-5">
+          <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{{ offre.titre }}</h3>
+
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ offre.description }}</p>
+
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-2xl font-bold text-indigo-600">{{ offre.prix }} DT</span>
+            <span class="text-sm text-gray-500 flex items-center gap-1">
+              <i class="fas fa-map-marker-alt"></i> {{ offre.wilaya }}
+            </span>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-gray-500">
+            <span class="flex items-center gap-1">
+              <i class="fas fa-star"></i> {{ offre.etat }}
+            </span>
+            <span>{{ offre.created_at | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        </a>
+      </div>
+      
+    </div>
+    
+ 
+  
+</section>
+
+
+<!-- Stats Section -->
+<section class="py-20 px-4 bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">
+      Rejoignez des milliers d'utilisateurs satisfaits
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="text-center p-8 bg-white/10 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition duration-300">
+        <div class="text-5xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+          {{ totalOffres }}
+        </div>
+        <div class="text-xl text-gray-300">Annonces actives</div>
+      </div>
+
+      <div class="text-center p-8 bg-white/10 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition duration-300">
+        <div class="text-5xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+          {{ totalUsers }}
+        </div>
+        <div class="text-xl text-gray-300">Utilisateurs</div>
+      </div>
+
+      <div class="text-center p-8 bg-white/10 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition duration-300">
+        <div class="text-5xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+          {{ totalVues }}
+        </div>
+        <div class="text-xl text-gray-300">Vues totales</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 px-4 bg-white">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+      Prêt à commencer ?
+    </h2>
+    <p class="text-xl text-gray-600 mb-10">
+      Publiez votre première annonce gratuitement
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a [routerLink]="['/publier']"
+         class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300">
+        Publier une annonce
+      </a>
+     
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

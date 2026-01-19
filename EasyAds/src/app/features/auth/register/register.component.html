@@ -1,0 +1,209 @@
+<app-navbar></app-navbar>
+<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+  <div class="max-w-lg w-full">
+
+    <!-- Carte principale -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+      
+      <!-- En-tête dégradé -->
+      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-10 text-center">
+        <h1 class="text-4xl font-bold text-white">Créer un compte</h1>
+        <p class="mt-3 text-indigo-100 text-lg">
+          Rejoignez EasyAds gratuitement en 30 secondes
+        </p>
+      </div>
+
+      <!-- Formulaire -->
+      <div class="px-8 py-10">
+        <form (ngSubmit)="onRegister()" class="space-y-6">
+
+          <!-- Nom complet -->
+          <div>
+            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
+              Nom complet
+            </label>
+            <input 
+              id="name"
+              type="text" 
+              [(ngModel)]="name"
+              name="name"
+              required
+              class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition placeholder-gray-400"
+              placeholder="Mohamed Benali" />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+              Adresse email
+            </label>
+            <input 
+              id="email"
+              type="email" 
+              [(ngModel)]="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition placeholder-gray-400"
+              placeholder="mohamed@example.com" />
+          </div>
+
+          <!-- Téléphone (optionnel mais recommandé en Algérie) -->
+          <div>
+            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+              Numéro de téléphone <span class="text-gray-500 font-normal">(facultatif)</span>
+            </label>
+            <input 
+              id="phone"
+              type="tel" 
+              [(ngModel)]="phone"
+              name="phone"
+              class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition placeholder-gray-400"
+              placeholder="0555 123 456" />
+          </div>
+          <div>
+            <label for="wilaya" class="block text-sm font-semibold text-gray-700 mb-2">
+              Wilaya
+            </label>
+            <select 
+              id="wilaya"
+              type="" 
+              [(ngModel)]="wilaya"
+              name="wilaya"
+              required
+              class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition placeholder-gray-400"
+              placeholder="Wilaya"
+              >
+              <option value="" disabled selected>Choisissez votre wilaya</option>
+              <option *ngFor="let wilaya of wilayas" [value]="wilaya">{{ wilaya }}</option>
+            </select>
+          </div>
+
+          <!-- Mot de passe -->
+          <div>
+            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+              Mot de passe
+            </label>
+            <div class="relative">
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                (keyup)="ontype($event,password)"
+                [(ngModel)]="password"
+                name="password"
+                required
+                minlength="6"
+                class="w-full px-5 py-3.5 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                placeholder="Minimum 6 caractères" />
+              <button
+                type="button"
+                (click)="togglePasswordVisibility()"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition">
+                <!-- Eye Icon (Show) -->
+                <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <!-- Eye Slash Icon (Hide) -->
+                <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <p *ngIf="color=='red'" class="text-red-500" id="message3">{{ alertMessage }}</p>
+          <p *ngIf="color=='yellow'" class="text-yellow-500" id="message2">{{ alertMessage }}</p>
+          <p *ngIf="color=='green'" class="text-green-500" id="message1">{{ alertMessage }}</p>
+          <div class="instruction">
+            <p >
+              *Le mot de passe doit contenir au moins une majuscule ou un caractère spécial.
+              <br>
+              *le mot de passe doit contenir au moins 6 caractères.
+              <br>
+              *Le mot de passe ne doit pas contenir l'email.
+
+              
+            </p>
+          </div>
+
+          <!-- Confirmation mot de passe -->
+          <div>
+            <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 mb-2">
+              Confirmer le mot de passe
+            </label>
+            <div class="relative">
+              <input
+                id="confirmPassword"
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                required
+                class="w-full px-5 py-3.5 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+              <button
+                type="button"
+                (click)="toggleConfirmPasswordVisibility()"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition">
+                <!-- Eye Icon (Show) -->
+                <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <!-- Eye Slash Icon (Hide) -->
+                <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- CGU + Newsletter -->
+          <div class="space-y-4">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" [(ngModel)]="acceptTerms" name="acceptTerms" required
+                     class="mt-1 w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" />
+              <span class="text-sm text-gray-700">
+                J'accepte les <a routerLink="/cgu" class="text-indigo-600 hover:underline font-medium">conditions d'utilisation</a> et la <a routerLink="/confidentialite" class="text-indigo-600 hover:underline font-medium">politique de confidentialité</a>
+              </span>
+            </label>
+
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" [(ngModel)]="newsletter" name="newsletter"
+                     class="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" />
+              <span class="text-sm text-gray-700">
+                Recevoir les meilleures annonces par email (1/semaine max)
+              </span>
+            </label>
+          </div>
+
+          <!-- Bouton Créer le compte -->
+          <button 
+            [disabled]="color=='red'"
+            [ngClass]="{ 'opacity-50 cursor-not-allowed': color == 'red' }"
+            type="submit"
+            class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-lg py-4 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition duration-300">
+            Créer mon compte gratuitement
+          </button>
+        </form>
+
+        <!-- Lien vers connexion -->
+        <div class="mt-8 text-center">
+          <p class="text-gray-600">
+            Déjà inscrit ? 
+            <a routerLink="/login" class="font-bold text-indigo-600 hover:text-indigo-500 transition">
+              Se connecter
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo en bas -->
+    <div class="mt-10 text-center">
+      <a routerLink="/" class="text-3xl font-bold text-indigo-600 hover:text-indigo-700 transition inline-block">
+        EasyAds
+      </a>
+      <p class="text-sm text-gray-500 mt-2">La référence des petites annonces en Algérie</p>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

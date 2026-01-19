@@ -1,0 +1,210 @@
+<app-navbar></app-navbar>
+
+<!-- Loading -->
+<div *ngIf="loading" class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="text-center">
+    <i class="fas fa-spinner fa-spin fa-3x text-indigo-600 mb-4"></i>
+    <p class="text-gray-600">Chargement...</p>
+  </div>
+</div>
+
+<!-- Error -->
+<div *ngIf="error && !loading" class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="text-center">
+    <i class="fas fa-exclamation-circle fa-3x text-red-500 mb-4"></i>
+    <p class="text-gray-600 mb-4">{{ error }}</p>
+    <button (click)="goBack()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">
+      Retour
+    </button>
+  </div>
+</div>
+
+<!-- Détails de l'offre -->
+<div *ngIf="offre && !loading" class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Bouton retour -->
+    <button (click)="goBack()" class="mb-6 flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition">
+      <i class="fas fa-arrow-left"></i>
+      Retour
+    </button>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- Colonne gauche: Images et détails -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Galerie d'images -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <!-- Image principale -->
+          <div class="relative h-96 bg-gradient-to-r from-indigo-500 to-purple-600">
+            <img
+              *ngIf="offre.images && offre.images.length > 0"
+              [src]="'http://localhost:8000/storage/' + offre.images[currentImageIndex]"
+              [alt]="offre.titre"
+              class="w-full h-full object-cover">
+
+            <div *ngIf="!offre.images || offre.images.length === 0"
+                 class="w-full h-full flex items-center justify-center text-white text-6xl">
+              <i class="fas fa-image"></i>
+            </div>
+
+            <!-- Boutons navigation -->
+            <button
+              *ngIf="offre.images && offre.images.length > 1"
+              (click)="previousImage()"
+              class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white w-12 h-12 rounded-full flex items-center justify-center transition">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button
+              *ngIf="offre.images && offre.images.length > 1"
+              (click)="nextImage()"
+              class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white w-12 h-12 rounded-full flex items-center justify-center transition">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Compteur d'images -->
+            <div *ngIf="offre.images && offre.images.length > 1"
+                 class="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
+              {{ currentImageIndex + 1 }} / {{ offre.images.length }}
+            </div>
+          </div>
+
+          <!-- Miniatures -->
+          <div *ngIf="offre.images && offre.images.length > 1" class="p-4 flex gap-2 overflow-x-auto">
+            <img
+              *ngFor="let image of offre.images; let i = index"
+              [src]="'http://localhost:8000/storage/' + image"
+              [alt]="'Image ' + (i + 1)"
+              (click)="selectImage(i)"
+              [class.ring-4]="i === currentImageIndex"
+              [class.ring-indigo-600]="i === currentImageIndex"
+              class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition">
+          </div>
+        </div>
+
+        <!-- Informations détaillées -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ offre.titre }}</h1>
+              <div class="flex items-center gap-4 text-sm text-gray-500">
+                <span class="flex items-center gap-1">
+                  <i class="fas fa-calendar"></i>
+                  {{ offre.created_at | date:'dd/MM/yyyy' }}
+                </span>
+                <span class="flex items-center gap-1">
+                  <i class="fas fa-eye"></i>
+                  {{ offre.vues || 0 }} vues
+                </span>
+              </div>
+            </div>
+
+            <!-- Badge statut -->
+            <span class="px-4 py-2 rounded-full text-sm font-bold"
+                  [ngClass]="{
+                    'bg-green-100 text-green-700': offre.statut === 'active',
+                    'bg-red-100 text-red-700': offre.statut === 'vendue',
+                    'bg-gray-100 text-gray-700': offre.statut === 'expiree',
+                    'bg-yellow-100 text-yellow-700': offre.statut === 'suspendue'
+                  }">
+              {{ offre.statut }}
+            </span>
+          </div>
+
+          <!-- Prix -->
+          <div class="mb-6 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+            <p class="text-sm text-gray-600 mb-1">Prix</p>
+            <p class="text-4xl font-bold text-indigo-600">{{ offre.prix }} DT</p>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">Description</h2>
+            <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ offre.description }}</p>
+          </div>
+
+          <!-- Caractéristiques -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-600 mb-1">Catégorie</p>
+              <p class="font-semibold text-gray-900 flex items-center gap-2">
+                <i class="fas fa-tag text-indigo-600"></i>
+                {{ offre.categorie }}
+              </p>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-600 mb-1">État</p>
+              <p class="font-semibold text-gray-900 flex items-center gap-2">
+                <i class="fas fa-star text-indigo-600"></i>
+                {{ offre.etat }}
+              </p>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-600 mb-1">Wilaya</p>
+              <p class="font-semibold text-gray-900 flex items-center gap-2">
+                <i class="fas fa-map-marker-alt text-indigo-600"></i>
+                {{ offre.wilaya }}
+              </p>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-lg" *ngIf="offre.commune">
+              <p class="text-sm text-gray-600 mb-1">Commune</p>
+              <p class="font-semibold text-gray-900">{{ offre.commune }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne droite: Contact vendeur -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-8">
+          <h2 class="text-xl font-bold text-gray-900 mb-6">Contact vendeur</h2>
+
+          <!-- Info vendeur -->
+          <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+            <p class="text-sm text-gray-600 mb-1">Vendeur</p>
+            <p class="font-semibold text-gray-900">{{ offre.user?.nom || 'Anonyme' }}</p>
+          </div>
+
+          <!-- Téléphone -->
+          <button
+            (click)="callPhone()"
+            class="w-full mb-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition">
+            <i class="fas fa-phone"></i>
+            {{ offre.numde_telephone }}
+          </button>
+
+          <!-- Bouton partager -->
+          <button
+            (click)="shareOffre()"
+            class="w-full mb-3 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition">
+            <i class="fas fa-share-alt"></i>
+            Partager
+          </button>
+
+          <!-- Bouton modifier (si propriétaire) -->
+          <button
+            *ngIf="isOwner"
+            (click)="editOffre()"
+            class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition">
+            <i class="fas fa-edit"></i>
+            Modifier l'annonce
+          </button>
+
+          <!-- Avertissement sécurité -->
+          <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p class="text-xs text-yellow-800">
+              <i class="fas fa-exclamation-triangle mr-1"></i>
+              <strong>Attention :</strong> Soyez vigilant lors de vos transactions. Ne payez jamais à l'avance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

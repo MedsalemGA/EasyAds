@@ -1,0 +1,23 @@
+ 
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@gmail.com",
+      "password": "admin",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "email": "client@gmail.com",
+      "password": "client",
+      "role": "client"
+    },
+    {
+      "id": 3,
+      "email": "seller@gmail.com",
+      "password": "seller",
+      "role": "seller"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+#message1{
+   
+   width: 100%;
+   height: 100%;
+  
+   padding: 10px;
+   margin-top: 10px;
+   color: #89fb4c;
+   text-align: center;
+   font-size: 1rem;
+   font-weight: bold;
+   
+   font-family: 'Courier New', Courier, monospace;
+}
+#message2{
+  
+   width: 100%;
+   height: 100%;
+   
+   
+   padding: 10px;
+   margin-top: 10px;
+   color: #fff000;
+   text-align: center;
+   font-size: 1rem;
+   font-weight: bold;
+   font-family: 'Courier New', Courier, monospace;
+}
+#message3{
+   
+   width: 100%;
+   height: 100%;
+  
+   padding: 10px;
+   margin-top: 10px;
+   color: #e91111;
+   text-align: center;
+   font-size: 1rem;
+   font-weight: bold;
+   font-family: 'Courier New', Courier, monospace;
+}
+#message3::after{
+   content:'';
+   display: block;
+   
+   height:6px;
+   background-color: #ff0000;
+   border-radius: 10px;
+   position: absolute;
+   top: 1000;
+   left: 110;
+   animation: slideInr 1s ease-out forwards;
+   
+}
+#message2::after{
+   content:'';
+   display: block;
+   height:6px;
+   background-color: #fff000;
+   border-radius: 10px;
+   position: absolute;
+   top: 1000;
+   left: 110;
+   animation: slideIny 1s ease-out forwards;
+}
+#message1::after{
+   content:'';
+   display: block;
+   
+   height:6px;
+   background-color: #89fb4c;
+   border-radius: 10px;
+   position: absolute;
+   top: 1000;
+   left: 110;
+   animation: slideIng 1s ease-out forwards;
+   
+   
+}
+@keyframes slideIny {
+   0% {
+    width: 5%;
+  }
+   100% {
+    width: 15%;
+  }
+}
+@keyframes slideIng {
+   0% {
+    width: 15%;
+  }
+   100% {
+    width: 30%;
+  }
+
+}
+@keyframes slideInr {
+   0% {
+    width: 0%;
+  }
+   100% {
+    width: 5%;
+  }
+}
+
+.instruction {
+   margin-top: 10px;
+   margin-bottom: 10px;
+   background-color: #f5f5f5;
+   padding: 10px;
+   border-radius: 10px;
+   border: 1px solid #e5e5e5;
+   box-shadow: 0 0 10px #e5e5e5;
+   text-align: center;
+   font-size: 0.8rem;
+   font-weight: bold;
+   font-family: 'Courier New', Courier, monospace;
+   color: #f14747;
+   
+   
+}

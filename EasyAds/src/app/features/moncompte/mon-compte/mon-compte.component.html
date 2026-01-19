@@ -1,0 +1,323 @@
+<app-navbar></app-navbar>
+
+<div class="account-container">
+  <div class="account-wrapper">
+    <!-- Header Section -->
+    <div class="account-header">
+      <div class="header-content">
+        <div class="user-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info">
+          <h1>Mon Compte</h1>
+          <p class="user-email">{{email}}</p>
+          <span class="user-role" [class.admin]="role === 'admin'">{{role}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-navigation">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'profile'"
+        (click)="activeTab = 'profile'">
+        <i class="fas fa-user"></i>
+        Profil
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'security'"
+        (click)="activeTab = 'security'">
+        <i class="fas fa-lock"></i>
+        Sécurité
+      </button>
+      <button
+        class="tab-btn danger"
+        [class.active]="activeTab === 'danger'"
+        (click)="activeTab = 'danger'">
+        <i class="fas fa-exclamation-triangle"></i>
+        Supprimer compte
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'annonces'"
+        (click)="activeTab = 'annonces'">
+        <i class="fas fa-bullhorn"></i>
+        Mes annonces
+      </button>
+    </div>
+
+    <!-- Profile Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'profile'">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fas fa-id-card"></i> Informations Personnelles</h2>
+          <p>Gérez vos informations personnelles</p>
+        </div>
+        <form class="account-form" (ngSubmit)="updateProfile()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="username">
+                <i class="fas fa-user"></i> Nom complet
+              </label>
+              <input
+                type="text"
+                id="username"
+                [(ngModel)]="username"
+                name="username"
+                [disabled]="!isEditMode"
+                placeholder="Votre nom complet">
+            </div>
+
+            <div class="form-group">
+              <label for="email">
+                <i class="fas fa-envelope"></i> Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                [(ngModel)]="email"
+                name="email"
+                [disabled]="!isEditMode"
+                placeholder="votre@email.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">
+                <i class="fas fa-phone"></i> Téléphone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                [(ngModel)]="phone"
+                name="phone"
+                [disabled]="!isEditMode"
+                placeholder="0555 12 34 56">
+            </div>
+
+            <div class="form-group">
+              <label for="wilaya">
+                <i class="fas fa-map-marker-alt"></i> Wilaya
+              </label>
+              <select
+                type="text"
+                id="wilaya"
+                [(ngModel)]="wilaya"
+                name="wilaya"
+                [disabled]="!isEditMode"
+                placeholder="Votre wilaya">
+                <option value="" disabled selected>Choisissez votre wilaya</option>
+                <option *ngFor="let wilaya of wilayas" [value]="wilaya">{{ wilaya }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              *ngIf="!isEditMode"
+              (click)="enableEditMode()">
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            <div *ngIf="isEditMode" class="edit-actions">
+              <button
+                type="button"
+                class="btn btn-outline"
+                (click)="cancelEdit()">
+                <i class="fas fa-times"></i> Annuler
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary">
+                <i class="fas fa-save"></i> Enregistrer
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Security Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'security'">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fas fa-shield-alt"></i> Changer le Mot de Passe</h2>
+          <p>Assurez-vous d'utiliser un mot de passe fort</p>
+        </div>
+        <form class="account-form" (ngSubmit)="changePassword()">
+          <div class="form-group">
+            <label for="currentPassword">
+              <i class="fas fa-key"></i> Mot de passe actuel
+            </label>
+            <input
+              type="password"
+              id="currentPassword"
+              [(ngModel)]="currentPassword"
+              name="currentPassword"
+              placeholder="Votre mot de passe actuel">
+          </div>
+
+          <div class="form-group">
+            <label for="newPassword">
+              <i class="fas fa-lock"></i> Nouveau mot de passe
+            </label>
+            <input (keyup)="ontype($event,newPassword)"
+              type="password"
+              id="newPassword"
+              [(ngModel)]="newPassword"
+              name="newPassword"
+              placeholder="Minimum 8 caractères">
+          </div>
+             <p *ngIf="color=='red'" class="text-red-500" id="message3">{{ alertMessage }}</p>
+          <p *ngIf="color=='yellow'" class="text-yellow-500" id="message2">{{ alertMessage }}</p>
+          <p *ngIf="color=='green'" class="text-green-500" id="message1">{{ alertMessage }}</p>
+
+
+          <div class="form-group">
+            <label for="confirmPassword">
+              <i class="fas fa-lock"></i> Confirmer le mot de passe
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirmez votre mot de passe">
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-check"></i> Mettre à jour le mot de passe
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Danger Zone Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'danger'">
+      <div class="card danger-card">
+        <div class="card-header">
+          <h2><i class="fas fa-exclamation-triangle"></i> Supprimer le Compte</h2>
+          <p>Cette action est irréversible. Toutes vos données seront définitivement supprimées.</p>
+        </div>
+        <div class="danger-zone">
+          <div class="warning-message">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              <strong>Attention !</strong>
+              <p>La suppression de votre compte entraînera :</p>
+              <ul>
+                <li>La suppression définitive de toutes vos annonces</li>
+                <li>La perte de votre historique</li>
+                <li>La suppression de toutes vos données personnelles</li>
+              </ul>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDeleteAccount()">
+            <i class="fas fa-trash-alt"></i> Supprimer mon compte
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" *ngIf="activeTab === 'annonces'">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fas fa-bullhorn"></i> Mes Annonces</h2>
+          <p>Gérez vos annonces publiées</p>
+        </div>
+
+        <!-- Message si aucune annonce -->
+        <div *ngIf="annonces.length === 0" class="no-annonces">
+          <i class="fas fa-inbox fa-4x"></i>
+          <h3>Aucune annonce</h3>
+          <p>Vous n'avez pas encore publié d'annonce</p>
+          <a routerLink="/publier" class="btn-create-annonce">
+            <i class="fas fa-plus-circle"></i> Créer une annonce
+          </a>
+        </div>
+
+        <!-- Liste des annonces -->
+        <div class="annonces-grid" *ngIf="annonces.length > 0">
+          <div *ngFor="let annonce of annonces" class="annonce-card">
+            <!-- Image principale -->
+            <div class="annonce-image">
+              <img
+                *ngIf="annonce.images && annonce.images.length > 0"
+                [src]="'http://localhost:8000/storage/' + annonce.images[0]"
+                [alt]="annonce.titre"
+                class="main-image">
+              <div *ngIf="!annonce.images || annonce.images.length === 0" class="no-image">
+                <i class="fas fa-image"></i>
+              </div>
+
+              <!-- Badge statut -->
+              <span class="badge-statut" [ngClass]="'statut-' + annonce.statut">
+                {{ annonce.statut }}
+              </span>
+
+              <!-- Nombre de vues -->
+              <span class="badge-vues">
+                <i class="fas fa-eye"></i> {{ annonce.vues || 0 }}
+              </span>
+            </div>
+
+            <!-- Contenu -->
+            <div class="annonce-content">
+              <h3 class="annonce-titre">{{ annonce.titre }}</h3>
+
+              <div class="annonce-info">
+                <div class="info-row">
+                  <span class="info-label"><i class="fas fa-tag"></i> Prix:</span>
+                  <span class="info-value prix">{{ annonce.prix }} DT</span>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-label"><i class="fas fa-list"></i> Catégorie:</span>
+                  <span class="info-value">{{ annonce.categorie }}</span>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-label"><i class="fas fa-map-marker-alt"></i> Localisation:</span>
+                  <span class="info-value">{{ annonce.wilaya }}</span>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-label"><i class="fas fa-star"></i> État:</span>
+                  <span class="info-value">{{ annonce.etat }}</span>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-label"><i class="fas fa-calendar"></i> Publiée le:</span>
+                  <span class="info-value">{{ annonce.created_at | date:'dd/MM/yyyy' }}</span>
+                </div>
+              </div>
+
+              <p class="annonce-description">{{ annonce.description | slice:0:100 }}{{ annonce.description.length > 100 ? '...' : '' }}</p>
+            </div>
+
+            <!-- Actions -->
+            <div class="annonce-actions">
+              <button class="btn-action btn-edit" (click)="editAnnonce(annonce.id)" title="Modifier">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="btn-action btn-delete" (click)="deleteAnnonce(annonce.id)" title="Supprimer">
+                <i class="fas fa-trash"></i> Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

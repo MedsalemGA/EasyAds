@@ -1,0 +1,205 @@
+<app-navbar></app-navbar>
+
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 py-12 px-4">
+  <div class="max-w-4xl mx-auto">
+    
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-10 text-center">
+        <h1 class="text-4xl font-bold text-white">Publier une annonce</h1>
+        <p class="mt-3 text-indigo-100 text-lg">
+          Partagez votre annonce avec la communauté
+        </p>
+      </div>
+    </div>
+
+ 
+    <form (ngSubmit)="onSubmit()" class="bg-white rounded-2xl shadow-xl p-8">
+   
+      <div class="mb-6">
+        <label for="titre" class="block text-gray-700 font-semibold mb-2">
+          <i class="fas fa-heading text-indigo-500 mr-2"></i>Titre de l'annonce *
+        </label>
+        <input
+          type="text"
+          id="titre"
+          [(ngModel)]="titre"
+          name="titre"
+          required
+          placeholder="Ex: iPhone 13 Pro Max 256GB"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+      </div>
+
+      <div class="mb-6">
+        <label for="description" class="block text-gray-700 font-semibold mb-2">
+          <i class="fas fa-align-left text-indigo-500 mr-2"></i>Description *
+        </label>
+        <textarea
+          id="description"
+          [(ngModel)]="description"
+          name="description"
+          required
+          rows="5"
+          placeholder="Décrivez votre article en détail..."
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none"></textarea>
+      </div>
+
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label for="prix" class="block text-gray-700 font-semibold mb-2">
+            <i class="fas fa-tag text-indigo-500 mr-2"></i>Prix (DT) *
+          </label>
+          <input
+            type="number"
+            id="prix"
+            [(ngModel)]="prix"
+            name="prix"
+            required
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+        </div>
+
+        <div>
+          <label for="categorie" class="block text-gray-700 font-semibold mb-2">
+            <i class="fas fa-list text-indigo-500 mr-2"></i>Catégorie *
+          </label>
+          <select
+            id="categorie"
+            [(ngModel)]="categorie"
+            name="categorie"
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+            <option value="" disabled selected>Choisissez une catégorie</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+      </div>
+
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label for="wilaya" class="block text-gray-700 font-semibold mb-2">
+            <i class="fas fa-map-marker-alt text-indigo-500 mr-2"></i>Wilaya *
+          </label>
+          <select
+            id="wilaya"
+            [(ngModel)]="wilaya"
+            name="wilaya"
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+            <option value="" disabled selected>Choisissez votre wilaya</option>
+            <option *ngFor="let w of wilayas" [value]="w">{{ w }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="commune" class="block text-gray-700 font-semibold mb-2">
+            <i class="fas fa-map-pin text-indigo-500 mr-2"></i>Commune
+          </label>
+          <input
+            type="text"
+            id="commune"
+            [(ngModel)]="commune"
+            name="commune"
+            placeholder="Ex: Centre-ville"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+        </div>
+      </div>
+
+    
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label for="etat" class="block text-gray-700 font-semibold mb-2">
+            <i class="fas fa-star text-indigo-500 mr-2"></i>État *
+          </label>
+          <select
+            id="etat"
+            [(ngModel)]="etat"
+            name="etat"
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+            <option value="neuf">Neuf</option>
+            <option value="bon">Bon état</option>
+            <option value="moyen">État moyen</option>
+            <option value="usage">Usagé</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="telephone" class="block text-gray-700 font-semibold mb-2">
+            <i class="fas fa-phone text-indigo-500 mr-2"></i>Téléphone *
+          </label>
+          <input
+            type="tel"
+            id="telephone"
+            [(ngModel)]="numde_telephone"
+            name="numde_telephone"
+            required
+            placeholder="Ex: 0555 12 34 56"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+        </div>
+      </div>
+
+    
+      <div class="mb-8">
+        <label class="block text-gray-700 font-semibold mb-2">
+          <i class="fas fa-images text-indigo-500 mr-2"></i>Photos * (Max 5)
+        </label>
+
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-indigo-500 transition">
+          <input
+            type="file"
+            id="images"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            multiple
+            class="hidden">
+
+          <label for="images" class="cursor-pointer">
+            <i class="fas fa-cloud-upload-alt text-5xl text-gray-400 mb-3"></i>
+            <p class="text-gray-600 font-medium">Cliquez pour ajouter des photos</p>
+            <p class="text-gray-400 text-sm mt-1">PNG, JPG, JPEG (Max 5 images)</p>
+          </label>
+        </div>
+
+       
+        <div *ngIf="imagePreviews.length > 0" class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
+          <div *ngFor="let preview of imagePreviews; let i = index" class="relative group">
+            <img [src]="preview" alt="Preview" class="w-full h-32 object-cover rounded-lg shadow">
+            <button
+              type="button"
+              (click)="removeImage(i)"
+              class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+              <i class="fas fa-times text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="flex gap-4">
+        <button
+          type="submit"
+          [disabled]="isSubmitting"
+          [class.opacity-50]="isSubmitting"
+          [class.cursor-not-allowed]="isSubmitting"
+          class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold py-4 rounded-lg hover:from-indigo-600 hover:to-purple-700 transform hover:scale-105 transition shadow-lg">
+          <i [class.fa-paper-plane]="!isSubmitting" [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting" class="fas mr-2"></i>
+          {{ isSubmitting ? 'Publication en cours...' : 'Publier l\'annonce' }}
+        </button>
+
+        <button
+          type="button"
+          (click)="onCancel()"
+          [disabled]="isSubmitting"
+          class="flex-1 bg-gray-200 text-gray-700 font-bold py-4 rounded-lg hover:bg-gray-300 transition">
+          <i class="fas fa-times mr-2"></i>Annuler
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>
